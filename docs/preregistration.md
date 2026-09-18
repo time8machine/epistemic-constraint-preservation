@@ -1,58 +1,20 @@
-# Preregistration: ROH v1.0 Agent Constraint Comparison
+# ROH-Bench v0.1 Preregistration
 
-## §1 Scope Table
-| Metric / Evidence | $H_1$ (ATMS Advantage) | $H_2$ (Generic Retain) | $H_3$ (Representation Integrity) |
-| :--- | :--- | :--- | :--- |
-| **Constraint $K$ Shift** | Licensed | **Not Licensed** | Licensed |
-| **Separation Log $C$** | Manipulation Check | **Not Licensed** | N/A |
-| **Committed Rate $U$** | Licensed | **Not Licensed** | Licensed |
+Freeze date: 18 September 2026.
 
-## §2 Hypotheses
-* **$H_1$:** ATMS-style dependency networks retain constraint scores above $0.90$ under environment shift.
-* **$H_2$:** Simple capacity expansions account for memory performance differences (Null Control via Arm B′).
-* **$H_3$:** Patterned performance holds across rule families without uniform advantage.
+## Question
+When hidden environmental rules change, does persistent non-erasing representation of unresolved residuals improve adaptation and transfer relative to a matched collapse/update architecture?
 
-## §3 Rule Families
-Five distinct families defined: $F_1$, $F_2$, $F_3$ (deliberate near-null control), $F_4$, $F_5$.
+## Primary endpoint
+For each world, POCE is mean prediction error over episodes 121–180. The paired effect is mean(POCE_Collapse - POCE_ROH).
 
-## §4 World Generator
-*Status: Pending explicit rule family parameter stabilization.*
+## Fixed design
+100 worlds: 20 threshold, 20 parity, 20 conjunction, 20 relational, 20 piecewise. Seeds 10000–10099. 300 episodes per world. Episodes 1–80 learn; 81–120 obstruction; 121–180 adaptation; 181–240 stability; 241–300 transfer. Five structured obstruction events occur at 82–86. Noise residuals occur at 90, 104, 116.
 
-## §5 Arm Specifications
-* **Arm A:** ATMS-style assumption dependency tracking.
-* **Arm B:** AGM-style minimal contraction belief revision.
-* **Arm B′:** Inert-memory capacity control (rules out memory capacity as a single confounding variable).
+## Secondary metrics
+T90, obstruction retention (OR), false obstruction rate (FOR), residual recurrence (RR), transfer accuracy (TA), backward retention (BR), model-revision efficiency (CM), obstruction resolution time (ORT).
 
-## §6 Execution Protocol
-Runs via automated GitHub Actions matrix execution across all rule families and arms.
+## Falsification
+A positive result is not interpreted as evidence that ROH is sufficient for AGI. The hypothesis is unsupported if the preregistered primary comparison does not show the specified reduction in POCE, or if the result requires changing the generator, evaluation windows, primary metric, or randomization after results are observed.
 
-## §7 Metrics & Measurement (OPEN PRE-SEAL DECISION)
-* **Metric $K$:** Constraint preservation ratio.
-* **Metric $C$:** Manipulation check (arm separation).
-* **Metric $U$ (Under Revision):** 
-  * *Failed Def 1 (Open-obstruction):* Scores $1.0$ trivially for Arm B.
-  * *Failed Def 2 (Counter-evidence):* Scores $0.0$ trivially for Arm B.
-  * *Proposed Fix:* Behavioral adoption metric (Committed-Prediction Rate with scored residual abstention).
-
-## §8 Patterned Predictions
-Preregistered pattern across rule families. Uniform advantage across all families counts against $H_1$.
-
-## §9 Threshold Conditions
-All five conditions must pass jointly. No partial credit:
-1. $K(A) \ge 0.90$ post-shift.
-2. $K(B) < 0.60$ post-shift.
-3. $C$ confirms execution separation.
-4. $U$ demonstrates non-zero committed prediction difference without signature inversion.
-5. Arm B′ fails to replicate Arm A performance.
-
-## §10 Runtime Guards
-Calls to `assert_matched()` and `assert_streams_identical()` required on all production runs.
-
-## §11 Analysis Plan
-Matrix aggregation via automated Pytest runs.
-
-## §12 Compute Allocation (OPEN PRE-SEAL DECISION)
-Decision between 2-arm (retention cap on A) vs 3-arm (higher compute, cleaner control).
-
-## §13 Sealing Log
-*Preregistration status: UNSEALED (2 decisions pending resolution).*
+No composite score is used.

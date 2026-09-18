@@ -83,13 +83,21 @@ def pair(f,rng):
 
 def generate_world(world_id,family,seed,episodes=300):
     rng=random.Random(seed); pre,post,change=pair(family,rng)
+    # Enumerate the complete finite context space rather than relying on random
+    # discovery. This guarantees that a valid rule change is represented in the
+    # obstruction phase and makes world generation deterministic for a seed.
     changed=[]
-    for _ in range(20000):
-        s=state(rng); a=rng.randrange(ACTIONS)
-        if rule_value(pre,s,a)!=rule_value(post,s,a): changed.append((s,a))
-        if len(changed)>=30: break
-    if len(changed)<5: raise RuntimeError("insufficient changed contexts")
-    rng.shuffle(changed); stream=[]
+    for bits in __import__("itertools").product(range(2), repeat=6):
+        for c0 in range(3):
+            for c1 in range(3):
+                s=tuple(bits)+(c0,c1)
+                for a in range(ACTIONS):
+                    if rule_value(pre,s,a)!=rule_value(post,s,a):
+                        changed.append((s,a))
+    if len(changed)<5:
+        raise RuntimeError("rule pair has fewer than 5 changed contexts")
+    rng.shuffle(changed)
+    stream=[]
     for t in range(1,episodes+1):
         if t<=80: phase="learn"
         elif t<=120: phase="obstruction"
